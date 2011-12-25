@@ -1,0 +1,11 @@
+{
+    "name": "sigar",
+    "version": "0.0.1",
+    "description": "Sigar binding",
+    "author": "David Worms <david@adaltas.com>",
+    "contributors": [{
+        "name": "David Worms",
+        "email": "david@adaltas.com"
+    }],
+    "engines": { "node": ">= 0.6" }
+}
