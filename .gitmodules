@@ -1,0 +1,3 @@
+[submodule "deps/sigar"]
+	path = deps/sigar
+	url = https://github.com/hyperic/sigar.git
