@@ -7,7 +7,7 @@ module.exports =
 	'Test mem': (next) ->
 		s = sigar()
 		mem = s.mem()
-		#console.log 'mem', mem
+		# console.log 'mem', mem
 		assert.eql [
 			'ram', 'total', 'used', 'free', 'actual_used', 'actual_free', 'used_percent', 'free_percent'
 		], Object.keys(mem)
@@ -15,7 +15,7 @@ module.exports =
 	'Test swap': (next) ->
 		s = sigar()
 		swap = s.swap()
-		#console.log 'swap', swap
+		# console.log 'swap', swap
 		assert.eql [
 			'total', 'used', 'free','page_in','page_out'
 		], Object.keys(swap)
