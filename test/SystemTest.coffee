@@ -88,7 +88,7 @@ module.exports =
 		s = sigar()
 		fqdn = s.fqdn()
 		# console.log 'fqdn', fqdn
-		assert.eql fqdn, os.hostname()
+		assert.ok fqdn is os.hostname() or /^\d+\.\d+\.\d+\.\d+$/.test fqdn
 		next()
 
 

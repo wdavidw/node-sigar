@@ -7,9 +7,9 @@ module.exports =
 		s = sigar()
 		netInfo = s.netInfo()
 		# console.log 'netInfo', netInfo
-		# assert.eql [
-		# 	'default_gateway', 'default_gateway_interface', 'host_name', 'domain_name', 'primary_dns', 'secondary_dns'
-		# ], Object.keys(netInfo)
+		assert.eql [
+			'default_gateway', 'default_gateway_interface', 'host_name', 'domain_name', 'primary_dns', 'secondary_dns'
+		], Object.keys(netInfo)
 		next()
 	'Test netRouteList': (next) ->
 		s = sigar()
