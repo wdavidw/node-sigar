@@ -2,3 +2,5 @@
 /node_modules
 /build
 !.gitignore
+wscript-binary-dylib
+wscript-compile-src
