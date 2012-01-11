@@ -13,19 +13,19 @@ module.exports =
 		next()
 	'Test cpuList': (next) ->
 		s = sigar()
-		cpus = s.cpuList()
-		# console.log 'cpus', cpus
-		assert.ok cpus.length > 0
+		cpuList = s.cpuList()
+		# console.log 'cpuList', cpuList
+		assert.ok cpuList.length > 0
 		assert.eql [
 			'user', 'sys', 'nice', 'idle', 'wait', 'irq', 'soft_irq', 'stolen', 'total'
-		], Object.keys(cpus[0])
+		], Object.keys(cpuList[0])
 		next()
-	'Test cpuInfo': (next) ->
+	'Test cpuInfoList': (next) ->
 		s = sigar()
-		cpus = s.cpuInfo()
-		# console.log 'cpus', cpus
-		assert.ok cpus.length > 0
+		cpuInfoList = s.cpuInfoList()
+		# console.log 'cpuInfoList', cpuInfoList
+		assert.ok cpuInfoList.length > 0
 		assert.eql [
 			'vendor', 'model', 'mhz', 'mhz_max', 'mhz_min', 'cache_size', 'total_sockets', 'total_cores', 'cores_per_socket'
-		], Object.keys(cpus[0])
+		], Object.keys(cpuInfoList[0])
 		next()

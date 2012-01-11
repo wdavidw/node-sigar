@@ -122,6 +122,12 @@ module.exports =
 		# 	catch e
 		# 		console.log pid, e.message
 		next()
+	'Test procPort': (next) ->
+		s = sigar()
+		# TODO: start an http server and compare the return pid with the current pid
+		# procPort = s.procPort -1, 4000
+		# console.log 'procPort', procPort
+		next()
 	'Test threadCpu': (next) ->
 		# Note, doesn't seem to be implemented by thread on osx, return rusage of the current thread
 		s = sigar()

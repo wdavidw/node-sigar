@@ -1,5 +1,6 @@
 
 assert = require 'assert'
+os = require 'os'
 sigar = require '..'
 
 module.exports = 
@@ -49,13 +50,46 @@ module.exports =
 			'virtual_memory_cur', 'virtual_memory_max'
 		], Object.keys(resourceLimit)
 		next()
-
-
-
-
-
-
-
+	'Test whoList': (next) ->
+		s = sigar()
+		whoList = s.whoList()
+		# console.log 'whoList', whoList
+		for who in whoList
+			assert.eql [
+				'user', 'device', 
+				'host', 'time'
+			], Object.keys(who)
+		next()
+	'Test version': (next) ->
+		s = sigar()
+		version = s.version()
+		# console.log 'version', version
+		assert.eql [
+			'build_date', 'scm_revision', 
+			'version', 'archname', 
+			'archlib', 'binname', 'description', 
+			'major', 'minor', 
+			'maint', 'build'
+		], Object.keys(version)
+		next()
+	'Test sysInfo': (next) ->
+		s = sigar()
+		sysInfo = s.sysInfo()
+		# console.log 'sysInfo', sysInfo
+		assert.eql [
+			'name', 'version', 
+			'arch', 'machine', 
+			'description', 'patch_level', 
+			'vendor', 'vendor_version', 
+			'vendor_name', 'vendor_code_name'
+		], Object.keys(sysInfo)
+		next()
+	'Test fqdn': (next) ->
+		s = sigar()
+		fqdn = s.fqdn()
+		# console.log 'fqdn', fqdn
+		assert.eql fqdn, os.hostname()
+		next()
 
 
 
