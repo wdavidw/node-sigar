@@ -2,10 +2,14 @@
 Node Sigar binding
 ==================
 
+A complete binding to the [SIGAR](http://support.hyperic.com/display/SIGAR/Home) library.
+
 Documentation is available on the [project website](http://www.adaltas.com/projects/node-sigar.html).
 
 Problems
 --------
+
+Those are minor issues which I wasn't yet able to resolve.
 
 -	Calling `sigar_net_address_to_string` throw symbol error   
 	Impacted functions: `netRouteListGet`, `netInterfaceConfigGet`, `netInterfaceConfigPrimaryGet`, `netConnectionListGet`
@@ -21,4 +25,4 @@ Notes
 -----
 
 -	`sigar_net_connection_walk` is not implemented
--	`sigar_who_list_get` return 0 records on OSX
+-	`sigar_who_list_get` return 0 records (tested on OSX)
