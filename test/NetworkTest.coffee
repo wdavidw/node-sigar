@@ -65,9 +65,13 @@ module.exports =
 		next()
 	'Test netListenAddress': (next) ->
 		s = sigar()
-		netListenAddress = s.netListenAddress 22
-		# console.log 'netListenAddress', netListenAddress
-		assert.eql netListenAddress, '0.0.0.0'
+		try
+			netListenAddress = s.netListenAddress 22
+			# console.log 'netListenAddress', netListenAddress
+			assert.eql netListenAddress, '0.0.0.0'
+		catch e
+			# SSH port 22 not open
+			assert.eql e.message, 'sigar_net_listen_address_get error: 2 (No such file or directory)'
 		next()
 	'Test netStat': (next) ->
 		s = sigar()
