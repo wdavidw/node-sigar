@@ -1,6 +1,8 @@
-.*
-/node_modules
-/build
-!.gitignore
+build
+node_modules
 wscript-binary-dylib
 wscript-compile-src
+.*
+# Fix npm publish which otherwise include build hidden directories
+**/.*
+!.gitignore
