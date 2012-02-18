@@ -4,4 +4,4 @@ node_js:
   - 0.6
   - 0.7
 before_script:
-  - "apt-get install libtool pkg-config"
+  - "sudo apt-get install libtool pkg-config"
