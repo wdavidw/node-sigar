@@ -22,11 +22,6 @@ def configure(conf):
     srcpath = abspath("deps/sigar")
     buildpath = abspath("build/sigar")
     destpath = abspath("build/Release")
-    # Travis
-    if exists('.git'):
-        if os.system('git submodule update --init --recursive') != 0:
-            conf.fatal("Fail to git submodule")
-        
     cmd = "cp -rp %s %s && cd \"%s\" && ./autogen.sh && ./configure --prefix=%s --with-pic && make && make install"
     if os.system(cmd % (srcpath, buildpath, buildpath, destpath)) != 0:
         conf.fatal("Configuring sigar failed.")
