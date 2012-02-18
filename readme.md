@@ -1,10 +1,11 @@
+[![Build Status](https://secure.travis-ci.org/wdavidw/node-sigar.png)](http://travis-ci.org/wdavidw/node-sigar)
 
 Node Sigar binding
 ==================
 
 A complete binding to the [SIGAR](http://support.hyperic.com/display/SIGAR/Home) library.
 
-Documentation is available on the [project website](http://www.adaltas.com/projects/node-sigar.html).
+Documentation is available on the [project website](http://www.adaltas.com/projects/node-sigar).
 
 Note, documentation include important installation instruction for some platforms.
 
