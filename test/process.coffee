@@ -1,136 +1,125 @@
 
-assert = require 'assert'
+should = require 'should'
 sigar = require '..'
 
-module.exports = 
-	'Test procList': (next) ->
-		s = sigar()
+describe 'process', ->
+	
+	s = sigar()
+
+	it 'should list all of them', ->
 		procList = s.procList()
 		# console.log 'procList', procList
-		assert.ok procList.indexOf process.pid isnt -1
-		next()
-	'Test procStat': (next) ->
-		s = sigar()
+		procList.should.include process.pid
+
+	it 'should return statistics info', ->
 		procStat = s.procStat()
 		# console.log 'procStat', procStat
-		assert.eql [
+		Object.keys(procStat).should.eql [
 			'total', 'sleeping', 'running', 'zombie', 'stopped', 'idle', 'threads'
-		], Object.keys(procStat)
-		next()
-	'Test procMem': (next) ->
-		s = sigar()
+		]
+
+	it 'should return memory info', ->
 		procMem = s.procMem process.pid
 		# console.log 'procMem', procMem
-		assert.eql [
+		Object.keys(procMem).should.eql [
 			'size', 'resident', 'share', 'minor_faults', 'major_faults', 'page_faults'
-		], Object.keys(procMem)
-		next()
-	'Test procCred': (next) ->
-		s = sigar()
+		]
+
+	it 'should return credential info', ->
 		procCred = s.procCred process.pid
 		# console.log 'procCred', procCred
-		assert.eql [
+		Object.keys(procCred).should.eql [
 			'uid', 'gid', 'euid', 'egid'
-		], Object.keys(procCred)
+		]
 		# procList = s.procList()
 		# for pid in procList
 		# 	console.log pid, s.procCred pid
-		next()
-	'Test procTime': (next) ->
-		s = sigar()
+
+	it 'should return time info', ->
 		procTime = s.procTime process.pid
 		# console.log 'procTime', procTime
-		assert.eql [
+		Object.keys(procTime).should.eql [
 			'start_time', 'user', 'sys', 'total'
-		], Object.keys(procTime)
+		]
 		# procList = s.procList()
 		# for pid in procList
 		# 	console.log pid, s.procTime pid
-		next()
-	'Test procCpu': (next) ->
-		s = sigar()
+
+	it 'should return cpu info', ->
 		procCpu = s.procCpu process.pid
 		# console.log 'procCpu', procCpu
-		assert.eql [
+		Object.keys(procCpu).should.eql [
 			'start_time', 'user', 'sys', 'total', 'last_time', 'percent'
-		], Object.keys(procCpu)
+		]
 		# procList = s.procList()
 		# for pid in procList
 		# 	console.log pid, s.procCpu pid
-		next()
-	'Test procState': (next) ->
-		s = sigar()
+
+	it 'should return state', ->
 		procState = s.procState process.pid
 		# console.log 'procState', procState
-		assert.eql [
+		Object.keys(procState).should.eql [
 			'name', 'state', 'ppid', 'tty', 'priority', 'nice', 'processor', 'threads'
-		], Object.keys(procState)
+		]
 		# procList = s.procList()
 		# for pid in procList
 		# 	state = s.procState pid
 			# console.log state.name, String.fromCharCode(state.state)
 			# console.log state.name, state.state
-		next()
-	'Test procArgs': (next) ->
-		s = sigar()
+
+	it 'should return arguments', ->
 		procArgs = s.procArgs process.pid
 		# console.log 'procArgs', procArgs
-		assert.ok procArgs.length > 0
-		assert.eql procArgs[0], 'node'
+		procArgs.length.should.be.above 0
+		procArgs[0].should.eql 'node'
 		# procList = s.procList()
 		# for pid in procList
 		# 	console.log pid, s.procArgs pid
-		next()
-	'Test procEnv': (next) ->
-		s = sigar()
+
+	it 'should return environment', ->
 		procEnv = s.procEnv process.pid
 		# console.log 'procEnv', procEnv
-		assert.eql procEnv['HOME'], process.env['HOME']
-		next()
-	'Test procFd': (next) ->
-		s = sigar()
+		procEnv['HOME'].should.eql process.env['HOME']
+
+	it 'should return file descriptor', ->
 		try
 			procFd = s.procFd process.pid
-			console.log 'procFd', procFd
-			assert.eql [
+			# console.log 'procFd', procFd
+			Object.keys(procFd).should.eql [
 				'total'
-			], Object.keys(procFd)
+			]
 		catch e # OSX
-			assert.eql e.message, 'sigar_proc_fd_get error: 20001 (This function has not been implemented on this platform)'
-		next()
-	'Test procExe': (next) ->
-		s = sigar()
+			e.message.should.eql 'sigar_proc_fd_get error: 20001 (This function has not been implemented on this platform)'
+
+	it 'should return exec information', ->
 		procExe = s.procExe process.pid
 		# console.log 'procExe', procExe
-		assert.eql [
+		Object.keys(procExe).should.eql [
 			'name', 'cwd', 'root'
-		], Object.keys(procExe)
+		]
 		# procList = s.procList()
 		# for pid in procList
 		# 	console.log pid, s.procExe pid
-		next()
-	'Test procModules': (next) ->
-		s = sigar()
+
+	it 'should return module information', ->
 		procModules = s.procModules process.pid
 		# console.log 'procModules', procModules
-		assert.ok Array.isArray procModules
-		assert.ok procModules.length > 0
+		procModules.should.be.instanceof Array 
+		procModules.length.should.be.above 0
 		# procList = s.procList()
 		# for pid in procList
 		# 	try
 		# 		console.log pid, s.procModules pid
 		# 	catch e
 		# 		console.log pid, e.message
-		next()
-	'Test procPort': (next) ->
-		s = sigar()
+
+	it 'should return port information', ->
 		# TODO: start an http server and compare the return pid with the current pid
 		# procPort = s.procPort -1, 4000
 		# console.log 'procPort', procPort
-		next()
-	'Test threadCpu': (next) ->
+
+	it 'should return cpu usage per thread', ->
 		# Note, doesn't seem to be implemented by thread on osx, return rusage of the current thread
-		s = sigar()
 		# threadCpu = s.threadCpu process.pid
 		# console.log 'threadCpu', threadCpu
 		# procList = s.procList()
@@ -139,4 +128,4 @@ module.exports =
 		# 		console.log pid, s.threadCpu pid+23
 		# 	catch e
 		# 		console.log pid, e.message
-		next()
+
