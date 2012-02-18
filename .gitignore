@@ -5,4 +5,5 @@ wscript-compile-src
 .*
 # Fix npm publish which otherwise include build hidden directories
 **/.*
+!.travis.yml
 !.gitignore
