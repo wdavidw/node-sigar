@@ -4,5 +4,5 @@ node_js:
   - 0.6
   - 0.7
 before_install:
-  - "git submodule update --init --recursive"
   - "sudo apt-get install libtool pkg-config"
+  - "git submodule update --init --recursive"
