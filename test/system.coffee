@@ -1,43 +1,41 @@
 
-assert = require 'assert'
+should = require 'should'
 os = require 'os'
 sigar = require '..'
 
-module.exports = 
-	'Test mem': (next) ->
-		s = sigar()
+describe 'system', ->
+
+	s = sigar()
+
+	it 'should return memory', ->
 		mem = s.mem()
 		# console.log 'mem', mem
-		assert.eql [
+		Object.keys(mem).should.eql [
 			'ram', 'total', 'used', 'free', 'actual_used', 'actual_free', 'used_percent', 'free_percent'
-		], Object.keys(mem)
-		next()
-	'Test swap': (next) ->
-		s = sigar()
+		]
+
+	it 'should return swap', ->
 		swap = s.swap()
 		# console.log 'swap', swap
-		assert.eql [
+		Object.keys(swap).should.eql [
 			'total', 'used', 'free','page_in','page_out'
-		], Object.keys(swap)
-		next()
-	'Test uptime': (next) ->
-		s = sigar()
+		]
+
+	it 'should return uptime', ->
 		uptime = s.uptime()
 		# console.log 'uptime', uptime
-		assert.ok uptime > 0
-		next()
-	'Test loadavg': (next) ->
-		s = sigar()
+		uptime.should.be.above 0
+
+	it 'should return loadavg', ->
 		loadavg = s.loadavg()
 		# console.log 'loadavg', loadavg
-		assert.eql loadavg.length, 3
-		assert.ok loadavg[0] > 0
-		next()
-	'Test resourceLimit': (next) ->
-		s = sigar()
+		loadavg.length.should.eql 3
+		loadavg[0].should.be.above 0
+
+	it 'should resource limit', ->
 		resourceLimit = s.resourceLimit()
 		# console.log 'resourceLimit', resourceLimit
-		assert.eql [
+		Object.keys(resourceLimit).should.eql [
 			'cpu_cur', 'cpu_max', 
 			'file_size_cur', 'file_size_max', 
 			'pipe_size_cur', 'pipe_size_max', 
@@ -48,48 +46,44 @@ module.exports =
 			'processes_cur', 'processes_max', 
 			'open_files_cur', 'open_files_max', 
 			'virtual_memory_cur', 'virtual_memory_max'
-		], Object.keys(resourceLimit)
-		next()
-	'Test whoList': (next) ->
-		s = sigar()
+		]
+
+	it 'should list who', ->
 		whoList = s.whoList()
 		# console.log 'whoList', whoList
 		for who in whoList
-			assert.eql [
+			Object.keys(who).should.eql [
 				'user', 'device', 
 				'host', 'time'
-			], Object.keys(who)
-		next()
-	'Test version': (next) ->
-		s = sigar()
+			]
+
+	it 'should return version', ->
 		version = s.version()
 		# console.log 'version', version
-		assert.eql [
+		Object.keys(version).should.eql [
 			'build_date', 'scm_revision', 
 			'version', 'archname', 
 			'archlib', 'binname', 'description', 
 			'major', 'minor', 
 			'maint', 'build'
-		], Object.keys(version)
-		next()
-	'Test sysInfo': (next) ->
-		s = sigar()
+		]
+
+	it 'should return system info', ->
 		sysInfo = s.sysInfo()
 		# console.log 'sysInfo', sysInfo
-		assert.eql [
+		Object.keys(sysInfo).should.eql [
 			'name', 'version', 
 			'arch', 'machine', 
 			'description', 'patch_level', 
 			'vendor', 'vendor_version', 
 			'vendor_name', 'vendor_code_name'
-		], Object.keys(sysInfo)
-		next()
-	'Test fqdn': (next) ->
-		s = sigar()
+		]
+
+	it 'should return fqdn', ->
 		fqdn = s.fqdn()
 		# console.log 'fqdn', fqdn
-		assert.ok fqdn is os.hostname() or /^\d+\.\d+\.\d+\.\d+$/.test fqdn
-		next()
+		( os.hostname() or /^\d+\.\d+\.\d+\.\d+$/.test fqdn ).should.be.ok
+
 
 
 

@@ -1,19 +1,29 @@
 {
     "name": "sigar",
+    "description": "Sigar binding for Node.js",
+    "keywords": ["cluster", "system", "cpu", "os", "network"],
     "version": "0.0.1",
-    "description": "Sigar binding",
+    "homepage": "http://www.adaltas.com/projects/node-mecano/",
     "author": "David Worms <david@adaltas.com>",
-    "contributors": [{
-        "name": "David Worms",
-        "email": "david@adaltas.com"
-    }],
-    "engines": { "node": ">= 0.6" },
-    "bugs": {
-        "url": "https://github.com/wdavidw/node-sigar/issues"
-    },
     "repository": {
         "type": "git",
         "url": "https://github.com/wdavidw/node-sigar.git"
     },
-    "homepage": "https://github.com/wdavidw/node-sigar"
+    "bugs": {
+        "email": "open@adaltas.com",
+        "url": "https://github.com/wdavidw/node-sigar.git"
+    },
+    "dependencies": {},
+    "devDependencies": {
+        "mocha": "latest",
+        "should": "latest"
+    },
+    "contributors": [ 
+        { "name": "David Worms", "email": "david@adaltas.com" }
+    ],
+    "main": "index",
+    "engines": { "node": ">= 0.6.0" },
+    "scripts": {
+        "test": "mocha"
+    }
 }

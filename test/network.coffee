@@ -1,141 +1,143 @@
 
-assert = require 'assert'
+should = require 'should'
 sigar = require '..'
 
-module.exports = 
-	'Test netInfo': (next) ->
-		s = sigar()
+describe 'network', ->
+
+	s = sigar()
+
+	it 'should return info', ->
 		netInfo = s.netInfo()
 		# console.log 'netInfo', netInfo
-		assert.eql [
+		Object.keys(netInfo).should.eql [
 			'default_gateway', 'default_gateway_interface', 'host_name', 'domain_name', 'primary_dns', 'secondary_dns'
-		], Object.keys(netInfo)
-		next()
-	'Test netRouteList': (next) ->
-		s = sigar()
+		]
+
+	it 'should return route list', ->
 		netRouteList = s.netRouteList()
-		assert.ok netRouteList.length > 0
+		netRouteList.length.should.be.above 0
 		for netRoute in netRouteList
 			# console.log 'netRoute', netRoute
-			assert.eql [
+			Object.keys(netRoute).should.eql [
 				'destination', 'gateway', 'mask', 'flags', 'refcnt', 'use', 'metric', 'mtu', 'window', 'irtt', 'ifname'
-			], Object.keys(netRoute)
-		next()
-	'Test netInterfaceList': (next) ->
-		s = sigar()
+			]
+
+	it 'should return interface list', ->
 		netInterfaceList = s.netInterfaceList()
-		assert.ok netInterfaceList.length > 0
+		netInterfaceList.length.should.be.above 0
 		for netInterface in netInterfaceList
-			assert.ok /^[\w]+$/.test(netInterface) # Note: might be too restricive
-		next()
-	'Test netInterfaceConfig': (next) ->
-		s = sigar()
+			/^[\w]+$/.test(netInterface).should.be.ok # Note: might be too restricive
+
+	it 'should return config for a give interface', ->
 		netInterfaceList = s.netInterfaceList()
 		for netInterface in netInterfaceList
 			netInterfaceConfig = s.netInterfaceConfig netInterface
-			# console.log 'netInterfaceConfig', netInterfaceConfig
-		next()
-	'Test netInterfaceConfigPrimary': (next) ->
-		s = sigar()
+			Object.keys(netInterfaceConfig).should.eql [
+				'name', 'type', 'description', 'hwaddr', 
+				'address', 'destination', 'broadcast', 'netmask', 
+				'address6', 'prefix6_length', 'scope6', 'flags', 
+				'mtu', 'metric', 'tx_queue_len'
+			]
+
+	it 'should return primary interface configuration', ->
 		netInterfaceConfigPrimary = s.netInterfaceConfigPrimary()
 		# console.log 'netInterfaceConfigPrimary', netInterfaceConfigPrimary
-		next()
-	'Test netInterfaceStat': (next) ->
-		s = sigar()
+		Object.keys(netInterfaceConfigPrimary).should.eql [
+			'name', 'type', 'description', 'hwaddr', 
+			'address', 'destination', 'broadcast', 'netmask', 
+			'address6', 'prefix6_length', 'scope6', 'flags', 
+			'mtu', 'metric', 'tx_queue_len'
+		]
+
+	it 'should return stat for a given interface', ->
 		netInterfaceList = s.netInterfaceList()
 		for netInterface in netInterfaceList
 			netInterfaceStat = s.netInterfaceStat netInterface
 			# console.log 'netInterfaceStat', netInterface, netInterfaceStat
-			assert.eql [
+			Object.keys(netInterfaceStat).should.eql [
 				'rx_packets', 'rx_bytes', 'rx_errors', 'rx_dropped', 
 				'rx_overruns', 'rx_frame', 'tx_packets', 'tx_bytes', 
 				'tx_errors', 'tx_dropped', 'tx_overruns', 'tx_collisions', 
 				'tx_carrier', 'speed'
-			], Object.keys(netInterfaceStat)
-		next()
-	'Test netConnectionList': (next) ->
-		s = sigar()
+			]
+
+	it 'should return network connection list', ->
 		netConnectionList = s.netConnectionList -1
-		assert.ok netConnectionList.length > 0
+		netConnectionList.length.should.be.above 0
 		for netConnection in netConnectionList
 			# console.log 'netConnection', netConnection
-			assert.eql [
-				'local_port', 'local_address', 'remote_port', 'remote_address', 'uid', 'inode', 'type', 'state', 'send_queue', 'receive_queue'
-			], Object.keys(netConnection)
-		next()
-	'Test netListenAddress': (next) ->
-		s = sigar()
+			Object.keys(netConnection).should.eql [
+				'local_port', 'local_address', 'remote_port', 
+				'remote_address', 'uid', 'inode', 'type', 
+				'state', 'send_queue', 'receive_queue'
+			]
+
+	it 'should return listen address for a give port', ->
 		try
 			netListenAddress = s.netListenAddress 22
 			# console.log 'netListenAddress', netListenAddress
-			assert.eql netListenAddress, '0.0.0.0'
+			netListenAddress.should.eql '0.0.0.0'
 		catch e
 			# SSH port 22 not open
-			assert.eql e.message, 'sigar_net_listen_address_get error: 2 (No such file or directory)'
-		next()
-	'Test netStat': (next) ->
-		s = sigar()
+			e.message.should.eql 'sigar_net_listen_address_get error: 2 (No such file or directory)'
+
+	it 'should return stat', ->
 		netStat = s.netStat -1
 		# Note, tcp_states are:
 		# SIGAR_TCP_ESTABLISHED = 1, SIGAR_TCP_SYN_SENT, SIGAR_TCP_SYN_RECV, SIGAR_TCP_FIN_WAIT1, 
 		# SIGAR_TCP_FIN_WAIT2, SIGAR_TCP_TIME_WAIT, SIGAR_TCP_CLOSE, SIGAR_TCP_CLOSE_WAIT, SIGAR_TCP_LAST_ACK, 
 		# SIGAR_TCP_LISTEN, SIGAR_TCP_CLOSING, SIGAR_TCP_IDLE, SIGAR_TCP_BOUND, SIGAR_TCP_UNKNOWN
 		# console.log 'netStat', netStat
-		assert.eql [
+		Object.keys(netStat).should.eql [
 			'tcp_states', 'tcp_inbound_total', 'tcp_outbound_total', 'all_inbound_total', 'all_outbound_total'
-		], Object.keys(netStat)
-		assert.eql netStat.tcp_states.length, 14
-		next()
-	'Test netStatPort': (next) ->
-		s = sigar()
+		]
+		netStat.tcp_states.length.should.eql 14
+
+	it 'should return stat for a give port', ->
 		netStatPort = s.netStatPort -1, '127.0.0.1', 22
 		# console.log 'netStatPort', netStatPort
-		assert.eql [
+		Object.keys(netStatPort).should.eql [
 			'tcp_states', 'tcp_inbound_total', 'tcp_outbound_total', 'all_inbound_total', 'all_outbound_total'
-		], Object.keys(netStatPort)
-		assert.eql netStatPort.tcp_states.length, 14
-		next()
-	'Test tcp': (next) ->
-		s = sigar()
+		]
+		netStatPort.tcp_states.length.should.eql 14
+
+	it 'should return tcp info', ->
 		tcp = s.tcp()
 		# console.log 'tcp', tcp
-		assert.eql [
+		Object.keys(tcp).should.eql [
 			'active_opens', 'passive_opens', 'attempt_fails', 'estab_resets', 'curr_estab', 'in_segs', 'out_segs', 'retrans_segs', 'in_errs', 'out_rsts'
-		], Object.keys(tcp)
-		next()
-	'Test nfsClientV2': (next) ->
-		s = sigar()
+		]
+
+	it 'should return nfsClientV2 info', ->
 		try
 			cpu = s.nfsClientV2()
 			console.log 'nfsClientV2', nfsClientV2
-			assert.eql [
+			Object.keys(nfsClientV2).should.eql [
 				'null', 'getattr', 'setattr', 'root', 'lookup', 'readlink', 
 				'read', 'writecache', 'write', 'create', 'remove', 'rename', 'link', 'symlink', 'mkdir', 'rmdir', 'readdir', 'fsstat'
-			], Object.keys(nfsClientV2)
+			]
 		catch e # OSX
-			assert.eql e.message, 'sigar_nfs_client_v2_get error: 20001 (This function has not been implemented on this platform)'
-		next()
-	'Test nfsServerV2': (next) ->
-		s = sigar()
+			e.message.should.eql 'sigar_nfs_client_v2_get error: 20001 (This function has not been implemented on this platform)'
+
+	it 'should return nfsServerV2 info', ->
 		try
 			cpu = s.nfsServerV2()
 			console.log 'nfsServerV2', nfsServerV2
-			assert.eql [
+			Object.keys(nfsServerV2).should.eql [
 				'null', 'getattr', 'setattr', 'root', 'lookup', 'readlink', 
 				'read', 'writecache', 'write', 'create', 'remove', 'rename', 'link', 'symlink', 'mkdir', 'rmdir', 'readdir', 'fsstat'
-			], Object.keys(nfsServerV2)
+			]
 		catch e # OSX
-			assert.eql e.message, 'sigar_nfs_server_v2_get error: 20001 (This function has not been implemented on this platform)'
-		next()
-	'Test arpList': (next) ->
-		s = sigar()
+			e.message.should.eql 'sigar_nfs_server_v2_get error: 20001 (This function has not been implemented on this platform)'
+
+	it 'should list arp', ->
 		arpList = s.arpList()
 		# console.log 'arpList', arpList
 		for arp in arpList
-			assert.eql [
+			Object.keys(arp).should.eql [
 				'ifname', 'type', 
 				'hwaddr', 'address', 
 				'flags'
-			], Object.keys(arp)
-		next()
+			]
+
 

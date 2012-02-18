@@ -1,9 +1,12 @@
 
-assert = require 'assert'
+should = require 'should'
 sigar = require '..'
 
-module.exports = 
-	'Test fileSystem constants': (next) ->
+describe 'file_system', ->
+
+	s = sigar()
+
+	it 'should return associated constant code', ->
 		# console.log 'FSTYPE_UNKNOWN', sigar.FSTYPE_UNKNOWN
 		# console.log 'FSTYPE_NONE', sigar.FSTYPE_NONE
 		# console.log 'FSTYPE_LOCAL_DISK', sigar.FSTYPE_LOCAL_DISK
@@ -12,46 +15,42 @@ module.exports =
 		# console.log 'FSTYPE_CDROM', sigar.FSTYPE_CDROM
 		# console.log 'FSTYPE_SWAP', sigar.FSTYPE_SWAP
 		# console.log 'FSTYPE_MAX', sigar.FSTYPE_MAX
-		assert.eql sigar.FSTYPE_UNKNOWN, 0
-		assert.eql sigar.FSTYPE_NONE, 1
-		assert.eql sigar.FSTYPE_LOCAL_DISK, 2
-		assert.eql sigar.FSTYPE_NETWORK, 3
-		assert.eql sigar.FSTYPE_RAM_DISK, 4
-		assert.eql sigar.FSTYPE_CDROM, 5
-		assert.eql sigar.FSTYPE_SWAP, 6
-		assert.eql sigar.FSTYPE_MAX, 7
-		next()
-	'Test fileSystemList': (next) ->
+		sigar.FSTYPE_UNKNOWN.should.eql 0
+		sigar.FSTYPE_NONE.should.eql 1
+		sigar.FSTYPE_LOCAL_DISK.should.eql 2
+		sigar.FSTYPE_NETWORK.should.eql 3
+		sigar.FSTYPE_RAM_DISK.should.eql 4
+		sigar.FSTYPE_CDROM.should.eql 5
+		sigar.FSTYPE_SWAP.should.eql 6
+		sigar.FSTYPE_MAX.should.eql 7
+
+	it 'should return information for each file system', ->
 		# Note, doesn't seem to be implemented by thread on osx, return rusage of the current thread
-		s = sigar()
 		fileSystemList = s.fileSystemList()
 		# console.log fileSystemList
 		for fs in fileSystemList
-			if fs.dir_name is '/'
-				foundRoot = true
-				assert.eql [
-					'dir_name', 'dev_name', 'type_name', 'sys_type_name', 'options', 'type', 'flags'
-				], Object.keys(fs)
-		assert.ok foundRoot
-		next()
-	'Test fileSystemUsage': (next) ->
+			continue unless fs.dir_name is '/'
+			foundRoot = true
+			Object.keys(fs).should.eql [
+				'dir_name', 'dev_name', 'type_name', 'sys_type_name', 'options', 'type', 'flags'
+			], 
+		foundRoot.should.be.ok
+
+	it 'should print a file system usage', ->
 		# Note, doesn't seem to be implemented by thread on osx, return rusage of the current thread
-		s = sigar()
 		fileSystemUsage = s.fileSystemUsage '/'
 		# console.log 'fileSystemUsage', fileSystemUsage
-		assert.eql [
+		Object.keys(fileSystemUsage).should.eql [
 			'disk', 'use_percent', 'total', 'free', 'used', 'avail', 'files', 'free_files'
-		], Object.keys(fileSystemUsage)
-		assert.eql [
+		]
+		Object.keys(fileSystemUsage.disk).should.eql [
 			'reads', 'writes', 'write_bytes', 'read_bytes', 'rtime', 'wtime', 'qtime', 'time', 'snaptime', 'service_time', 'queue'
-		], Object.keys(fileSystemUsage.disk)
-		next()
-	'Test fileSystemPing': (next) ->
+		]
+
+	it 'should ping ping the file system', ->
 		# Note, text decoding is wrong
-		s = sigar()
 		fileSystemPing = s.fileSystemPing()
 		# console.log fileSystemPing
-		assert.eql [
+		Object.keys(fileSystemPing).should.eql [
 			'dir_name', 'dev_name', 'type_name', 'sys_type_name', 'options', 'type', 'flags'
-		], Object.keys(fileSystemPing)
-		next()
+		]
