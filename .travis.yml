@@ -3,6 +3,6 @@ language: node_js
 node_js:
   - 0.6
   - 0.7
-before_script:
+before_install:
   - "git submodule --init --recursive"
   - "sudo apt-get install libtool pkg-config"
