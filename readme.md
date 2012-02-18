@@ -6,6 +6,8 @@ A complete binding to the [SIGAR](http://support.hyperic.com/display/SIGAR/Home)
 
 Documentation is available on the [project website](http://www.adaltas.com/projects/node-sigar.html).
 
+Note, documentation include important installation instruction for some platforms.
+
 SIGAR is a cross platform interface for gathering system information. From the project website, such information include:
 
 *   System memory, swap, cpu, load average, uptime, logins
