@@ -2,7 +2,7 @@
     "name": "sigar",
     "description": "Sigar binding for Node.js",
     "keywords": ["cluster", "system", "cpu", "os", "network"],
-    "version": "0.0.1",
+    "version": "0.0.2",
     "homepage": "http://www.adaltas.com/projects/node-mecano/",
     "author": "David Worms <david@adaltas.com>",
     "repository": {
