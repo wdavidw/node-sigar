@@ -15,6 +15,7 @@
     },
     "dependencies": {},
     "devDependencies": {
+        "coffee-script": "latest",
         "mocha": "latest",
         "should": "latest"
     },
