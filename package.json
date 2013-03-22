@@ -19,12 +19,16 @@
         "mocha": "latest",
         "should": "latest"
     },
-    "contributors": [ 
+    "contributors": [
+        { "name": "Kenneth Bentley", "email": "funisher@gmail.com" },
         { "name": "David Worms", "email": "david@adaltas.com" }
     ],
     "main": "index",
+    "gypfile": true,
     "engines": { "node": ">= 0.6.0" },
     "scripts": {
+        "cmakenotworking": "mkdir -p build/sigar && cp -rp deps/sigar/* build/sigar/ && cd build/sigar && cmake -D CMAKE_BUILD_TYPE=Release -D BUILD_SHARED_LIBS=false . && cmake --build . && node-gyp configure && node-gyp build",
+        "preinstall": "mkdir -p build/sigar && cp -rp deps/sigar/* build/sigar/ && cd build/sigar && ./autogen.sh && ./configure --prefix=`pwd`/build/sigar --with-pic && make && make install && cd ../.. && node-gyp configure && node-gyp build",
         "test": "mocha"
     }
 }
