@@ -1,6 +1,9 @@
 
 Sigar = require '../build/Release/sigar' .init!
-sprintf = require 'sprintf' .sprintf
+printf = require 'printf'
+
+# replication of `sigar_cpu_perc_calculate`
+# please refer to `sigar_format.c` for more info
 
 prev = Sigar.cpu!
 setInterval ->
@@ -39,6 +42,6 @@ setInterval ->
 		stolen: diff_stolen / diff_total
 	}
 	perc.combined = perc.user + perc.sys + perc.nice + perc.wait
-	console.log sprintf "user: %0.2f sys: %0.2f nice: %0.2f idle: %0.2f", perc.user, perc.sys, perc.nice, perc.idle
+	console.log printf "user: %0.2f sys: %0.2f nice: %0.2f idle: %0.2f", perc.user, perc.sys, perc.nice, perc.idle
 	prev := curr
 , 1000

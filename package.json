@@ -16,6 +16,7 @@
     "dependencies": {},
     "devDependencies": {
         "coffee-script": "latest",
+        "printf": "latest",
         "mocha": "latest",
         "should": "latest"
     },
